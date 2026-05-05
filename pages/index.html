@@ -1,4 +1,8 @@
 <!DOCTYPE html>
+<!--
+    Hi. CV typeset in LaTeX, glued by Jinja2 + GitHub Actions.
+    Source: github.com/CosmDandy/cv.cosmdandy.dev
+-->
 <html lang="en">
 
 <head>
@@ -622,7 +626,7 @@
 
         <div class="footer">
             Built with LaTeX, Jinja2 & GitHub Actions —
-            <a href="https://github.com/CosmDandy/cv">source</a>
+            <a href="https://github.com/CosmDandy/cv.cosmdandy.dev">source</a>
         </div>
     </div>
 
@@ -663,7 +667,10 @@
         // Cursor glow follower
         const cursorGlow = document.getElementById('cursor-glow');
         const downloadBtn = document.querySelector('.btn-download');
+        const dotsEl = document.querySelector('.dot-bg');
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         let mouseX = 0, mouseY = 0, glowX = 0, glowY = 0, hideGlow = false;
+        let dotsX = 0, dotsY = 0;
 
         document.addEventListener('mousemove', (e) => {
             mouseX = e.clientX; mouseY = e.clientY;
@@ -678,6 +685,15 @@
             glowY += (mouseY - glowY) * 0.15;
             cursorGlow.style.left = glowX + 'px';
             cursorGlow.style.top = glowY + 'px';
+
+            if (!prefersReducedMotion) {
+                const targetDotsX = (mouseX / window.innerWidth - 0.5) * 10;
+                const targetDotsY = (mouseY / window.innerHeight - 0.5) * 10;
+                dotsX += (targetDotsX - dotsX) * 0.05;
+                dotsY += (targetDotsY - dotsY) * 0.05;
+                dotsEl.style.backgroundPosition = `${dotsX.toFixed(2)}px ${dotsY.toFixed(2)}px`;
+            }
+
             requestAnimationFrame(animateCursor);
         }
         animateCursor();
